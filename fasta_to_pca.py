@@ -29,8 +29,6 @@ def k_mer_calc(k):
 	i = 0
 	for Value in fastaData.values():
 		kmer_dict_intermediate = kmer_dict.copy()
-		print(kmer_dict.values())
-		print(kmer_dict_intermediate.values())
 		for record in Value:
 			start = 0
 			end = start + k
@@ -39,7 +37,6 @@ def k_mer_calc(k):
 				start = start + 1
 				end = end + 1
 		result[fasta_names[i]] = kmer_dict_intermediate
-		print(result.items())
 		i = i + 1
 	return result
 
