@@ -44,13 +44,17 @@ def k_mer_calc(k):
 				start = start + 1
 				end = end + 1
 			try:
-					start = p - k
-					end = k
-					while start < (len(record.seq) - k + 1) and start < p:
-						kmer_dict_intermediate_pm[record.seq[start:end]] = kmer_dict_intermediate_pm.get(
-							record.seq[start:end]) + 1
-						start = start + 1
-						end = end + 1
+					if p >= k:
+						start_pm = p - k
+						end_pm = p
+					else:
+						start_pm = 0
+						end_pm = k
+					while start_pm < (len(record.seq) - k + 1) and start_pm < p:
+						kmer_dict_intermediate_pm[record.seq[start_pm:end_pm]] = kmer_dict_intermediate_pm.get(
+							record.seq[start_pm:end_pm]) + 1
+						start_pm = start_pm + 1
+						end_pm = end_pm + 1
 			except UnboundLocalError:
 				pass
 		result[fasta_names[i]] = kmer_dict_intermediate
@@ -98,7 +102,7 @@ def plot_pca(matrixpca):
 		for i, txt in enumerate(fasta_names):
 			plt.annotate(txt, (xco_pm[i], yco_pm[i]))
 		try:
-			plt.savefig(args.output + "_with_position_marker")
+			plt.savefig(args.output + "_with_position_marker=" + args.position)
 			sys.exit()
 		except NameError:
 			plt.show()
