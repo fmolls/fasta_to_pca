@@ -34,7 +34,7 @@ def kmer_dict_calc(k):
 # -- 1
 def normalisation(k, iterator):
 	for filename in args.fasta:
-		fastaData[filename] = parse(os.getcwd() + "/" + filename, 'fasta')
+		fastaData[filename] = parse(filename, 'fasta')
 	Valuen = list(fastaData[fasta_names[iterator]])
 	if int(args.seqineq)==0:
 		return len(Valuen) * (len(Valuen[0].seq) - k + 1)
@@ -110,13 +110,12 @@ def plot_pca(matrixpca):
 	x_pca.shape
 	plt.scatter(x_pca[:,0],x_pca[:,1])
 	for i, txt in enumerate(fasta_names):
-		plt.annotate(txt, (x_pca[i,0],x_pca[i,1]))
+		plt.annotate(os.path.basename(txt), (x_pca[i,0],x_pca[i,1]))
 	try:
 		plt.savefig(args.output)
 	except NameError:
 		plt.show()
 	try:
-		p = int(args.position)
 		intermediate = []
 		i = 0
 		for l in list(pm_pca):
@@ -132,12 +131,14 @@ def plot_pca(matrixpca):
 		plt.scatter(x_pca[:, 0], x_pca[:, 1])
 		i = 0
 		for i, txt in enumerate(fasta_names):
-			plt.annotate(txt, (x_pca[i,0], x_pca[i,1]))
+			plt.annotate(os.path.basename(txt), (x_pca[i,0], x_pca[i,1]))
 		try:
 			plt.savefig(args.output + "_with_position_marker=" + args.position)
 			sys.exit()
 		except NameError:
 			plt.show()
+		except TypeError:
+			print("position marker position marker not set")
 	except UnboundLocalError:
 		print("position marker position marker not set")
 		sys.exit()
@@ -151,17 +152,11 @@ def main():
 		print("please input number of k-meres ")
 		sys.exit()
 	else:
-		#try:
 			for filename in args.fasta:
-				fastaData[filename] = parse(os.getcwd() + "/" + filename,'fasta')
+				fastaData[filename] = parse(filename,'fasta')
 				fasta_names.append(filename)
 			plot_pca(k_mer_calc(k,iterator,kmer_dict))
-		#except TypeError:
-		#	print("TypeError detected")
-		#	pass
-		#	sys.exit()
-		#else:
-		#	sys.exit()
+
 
 if __name__ == "__main__":
     main()	
