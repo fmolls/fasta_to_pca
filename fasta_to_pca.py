@@ -21,7 +21,7 @@ parser.add_argument("-p", "--position", help='Additional parameter for position 
 parser.add_argument("-n","--seqineq", help="If the length of sequences of one Fasta-data are unequal, normalisation will be calculated differently. 0 = equal length of seqeunces , 1 = unequal length of sequences. If 1 is true, Runtime will increase.")
 args = parser.parse_args()
 def kmer_dict_calc(k):
-	# anlegen eines dictionaries für jedes mögliche k-mere, jeweils initialisiert mit 0 -- 1
+	# anlegen eines dictionaries für jedes mögliche k-mere, jeweils initialisiert mit 0 -- 1 O(1)
 	kmer_dict = {}
 	a = "ATGC"
 	kmer_perm = product(a, repeat=k)
@@ -33,6 +33,7 @@ def kmer_dict_calc(k):
 	return kmer_dict
 # -- 1
 def normalisation(k, iterator):
+	# berechnung des normalisierung O(1) / O(n)
 	for filename in args.fasta:
 		fastaData[filename] = parse(filename, 'fasta')
 	Valuen = list(fastaData[fasta_names[iterator]])
@@ -44,6 +45,7 @@ def normalisation(k, iterator):
 			intermediate = len(record.seq) + intermediate
 	return len(Valuen) * ((intermediate/len(Valuen)) - k + 1)
 def k_mer_calc(k,iterator,kmer_dict):
+	# O(n)
 	result = {}
 	i = 0
 	# Algorithmus um die k-mere aus den fastadateien auszulesen und deren anzahl im dictionary zu speichern -- 2
@@ -95,6 +97,7 @@ def k_mer_calc(k,iterator,kmer_dict):
 	return result
 	# -- 2
 def plot_pca(matrixpca):
+	# O(n)
 	intermediate = []
 	i = 0
 	for l in list(matrixpca):
@@ -159,6 +162,7 @@ def main():
 
 
 if __name__ == "__main__":
+	#O(1) + O(1)/O(n) + O(n) + O(1) = O(n)
     main()	
  
 
